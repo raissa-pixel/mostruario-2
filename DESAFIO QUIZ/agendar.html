@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aliança Suprema -<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aliança Suprema - Personalizador de Automóveis</title>
+    
+    <link href="Cybertruck verde.png" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* Configurações Globais */
+        body {
+            font-family: 'Exo 2', sans-serif;
+            background-color: #ffffff; 
+            color: #e0e0e0;
+            margin: 0;
+            padding: 20px;
+            /* Fundo abstrato escuro - pode ser uma imagem sua ou um padrão */
+            background-image: linear-gradient(rgba(10, 14, 26, 0.8), rgba(10, 14, 26, 1)), url('https://via.placeholder.com/1920x1080.png?text=Fundo+Abstrato+Escuro'); /* Substitua este link pela URL/caminho da sua imagem de fundo */
+            background-size: cover;
+            background-position: center;
+            min-height: 100vh;
+        }
+
+        .configurator-container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Cabeçalho */
+        header h1 {
+            font-size: 2.5rem;
+            font-weight: 300;
+            color: #ffffff;
+            border-bottom: 3px solid rgba(0, 194, 224, 0.5);
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        header .highlight {
+            font-weight: 700;
+            color: #00c2e0; /* Tom de ciano/azul */
+        }
+
+        /* Layout Principal (3 Colunas) */
+        .main-content {
+            display: flex;
+            flex-wrap: wrap; /* Permite quebrar linha em telas menores */
+            gap: 20px;
+        }
+
+        /* Configuração comum para as barras laterais e centro */
+        .sidebar-left, .visualizer, .sidebar-right {
+            background-color: rgba(18, 25, 43, 0.8); /* Fundo azulado/escuro semi-transparente */
+            border-radius: 8px;
+            padding: 20px;
+            border: 1px solid rgba(56, 79, 130, 0.5);
+            backdrop-filter: blur(5px); /* Efeito de vidro fosco */
+            box-sizing: border-box; /* Garante que o padding não estoure a largura */
+        }
+
+        h2 {
+            font-weight: 600;
+            color: #ffffff;
+            border-bottom: 1px solid #00c2e0;
+            padding-bottom: 8px;
+            margin-top: 0;
+        }
+
+        /* Coluna Esquerda: Modelos */
+        .sidebar-left {
+            flex: 1.5; 
+            min-width: 250px; /* Largura mínima */
+        }
+
+        .model-card {
+            background-color: rgba(30, 42, 70, 0.7);
+            border-radius: 5px;
+            margin-bottom: 15px;
+            padding: 10px;
+            text-align: center;
+            border: 1px solid transparent;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .model-card.active, .model-card:hover {
+            background-color: rgba(45, 60, 97, 0.9);
+            border-color: #00c2e0;
+            box-shadow: 0 0 10px rgba(0, 194, 224, 0.3);
+        }
+
+        .model-card img {
+            width: 100%;
+            height: auto; /* Mantém a proporção */
+            border-radius: 4px;
+        }
+
+        .model-card h3 {
+            margin: 10px 0 0;
+            font-weight: 400;
+            color: #f0f0f0;
+        }
+
+        /* Centro: Visualizador */
+        .visualizer {
+            flex: 5; /* Ocupa mais espaço */
+            min-width: 400px; /* Largura mínima */
+        }
+
+        .main-car-view img {
+            width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+
+        .custom-options {
+            display: flex;
+            flex-wrap: wrap; /* Permite quebrar linha */
+            justify-content: space-between;
+            margin-top: 20px;
+            gap: 20px;
+        }
+
+        .paint-selector {
+            flex: 1;
+            min-width: 250px; /* Largura mínima */
+        }
+
+        .color-palette {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+            max-width: 300px;
+        }
+
+        .color-swatch {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            border: 2px solid #555;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .color-swatch:hover {
+            transform: scale(1.1);
+            border-color: #fff;
+        }
+
+        .accessory-selector {
+            flex: 2;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+            gap: 10px;
+            min-width: 300px; /* Largura mínima */
+        }
+
+        .accessory-box {
+            background-color: rgba(30, 42, 70, 0.7);
+            border: 1px solid #384f82;
+            border-radius: 5px;
+            padding: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .accessory-box img {
+            width: 50px;
+            height: 50px;
+            object-fit: contain;
+            filter: invert(0.8); /* Deixa o ícone claro */
+        }
+
+        .accessory-box span {
+            display: block;
+            margin-top: 5px;
+            font-size: 0.8rem;
+            font-weight: 300;
+        }
+
+        .accessory-box.selected, .accessory-box:hover {
+            background-color: rgba(45, 60, 97, 0.9);
+            border-color: #00c2e0;
+        }
+
+        /* Coluna Direita: Especificações */
+        .sidebar-right {
+            flex: 2; /* Espaço intermediário */
+            min-width: 300px; /* Largura mínima */
+            display: flex;
+            flex-direction: column;
+        }
+
+        .spec-list {
+            flex-grow: 1; /* Empurra o preço final para baixo */
+        }
+
+        .spec-list p {
+            display: flex;
+            justify-content: space-between;
+            font-size: 1rem;
+            margin: 15px 0;
+            border-bottom: 1px solid #384f82;
+            padding-bottom: 10px;
+        }
+
+        .spec-list p strong {
+            font-weight: 600;
+            color: #a0a0a0;
+        }
+
+        .spec-list p span {
+            font-weight: 400;
+            color: #f0f0f0;
+        }
+
+        .spec-list .total-price-label {
+            border-bottom: none;
+            color: #a0a0a0;
+            margin-top: 30px;
+        }
+
+        .spec-list .total-price-label s {
+            color: #f08080; /* Preço antigo */
+        }
+
+        .final-price {
+            background-color: rgba(10, 14, 26, 0.5);
+            border: 1px solid #00c2e0;
+            border-radius: 5px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .final-price h3 {
+            margin: 0 0 10px 0;
+            font-weight: 400;
+            color: #a0a0a0;
+        }
+
+        .final-price .price-amount {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        /* Botão de Salvar */
+        footer {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .save-button {
+            background-color: #00c2e0;
+            color: #0a0e1a;
+            border: none;
+            border-radius: 5px;
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 50%;
+            min-width: 300px;
+        }
+
+        .save-button:hover {
+            background-color: #ffffff;
+            box-shadow: 0 0 15px rgba(0, 194, 224, 0.5);
+        }
+           /* Configurações Globais */
+           body {
+            font-family: 'Exo 2', sans-serif;
+            background-color: #000000; /* Fundo escuro principal */
+            color: #680404;
+            margin: 0;
+            padding: 20px;
+            /* Fundo abstrato escuro - pode ser uma imagem sua ou um padrão */
+            background-image: linear-gradient(rgba(0, 0, 0, 0.8), rgba(10, 14, 26, 1)), url('https://via.placeholder.com/1920x1080.png?text=Fundo+Abstrato+Escuro'); /* Substitua este link pela URL/caminho da sua imagem de fundo */
+            background-size: cover;
+            background-position: center;
+            min-height: 100vh;
+        }
+
+        .configurator-container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Cabeçalho */
+        header h1 {
+            font-size: 2.5rem;
+            font-weight: 300;
+            color: #ffffff;
+            border-bottom: 3px solid #FFD700;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        header .highlight {
+            font-weight: 700;
+            color: rgb(128, 9, 9);; /* Tom de vermelho */
+        }
+
+        /* Layout Principal (3 Colunas) */
+        .main-content {
+            display: flex;
+            flex-wrap: wrap; /* Permite quebrar linha em telas menores */
+            gap: 20px;
+        }
+
+        /* Configuração comum para as barras laterais e centro */
+        .sidebar-left, .visualizer, .sidebar-right {
+            background-color: rgba(92, 4, 4, 0.8); /* Fundo vermelho/escuro semi-transparente */
+            border-radius: 8px;
+            padding: 20px;
+            border: 1px solid #dcbc04;
+            backdrop-filter: blur(5px); /* Efeito de vidro fosco */
+            box-sizing: border-box; /* Garante que o padding não estoure a largura */
+        }
+
+        h2 {
+            font-weight: 600;
+            color: #ffffff;
+            border-bottom: 1px solid ;
+            padding-bottom: 8px;
+            margin-top: 0;
+        }
+
+        /* Coluna Esquerda: Modelos */
+        .sidebar-left {
+            flex: 1.5; 
+            min-width: 250px; /* Largura mínima */
+        }
+
+        .model-card {
+            background-color: rgb(56, 55, 55);
+            border-radius: 5px;
+            margin-bottom: 15px;
+            padding: 10px;
+            text-align: center;
+            border: 1px solid transparent;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .model-card.active, .model-card:hover {
+            background-color: rgb(56, 55, 55);
+            border-color: rgb(255, 255, 255);
+            box-shadow: 0 0 10px rgba(24, 24, 24, 0.783);
+        }
+
+        .model-card img {
+            width: 100%;
+            height: auto; /* Mantém a proporção */
+            border-radius: 4px;
+        }
+
+        .model-card h3 {
+            margin: 10px 0 0;
+            font-weight: 400;
+            color: #f0f0f0;
+        }
+
+        /* Centro: Visualizador */
+        .visualizer {
+            flex: 5; /* Ocupa mais espaço */
+            min-width: 400px; /* Largura mínima */
+        }
+
+        .main-car-view img {
+            width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+
+        .custom-options {
+            display: flex;
+            flex-wrap: wrap; /* Permite quebrar linha */
+            justify-content: space-between;
+            margin-top: 20px;
+            gap: 20px;
+        }
+
+        .paint-selector {
+            flex: 1;
+            min-width: 250px; /* Largura mínima */
+        }
+
+        .color-palette {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+            max-width: 300px;
+        }
+
+        .color-swatch {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            border: 2px solid #555;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .color-swatch:hover {
+            transform: scale(1.1);
+            border-color: #fff;
+        }
+
+        .accessory-selector {
+            flex: 2;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+            gap: 10px;
+            min-width: 300px; /* Largura mínima */
+        }
+
+        .accessory-box {
+            background-color: rgb(56, 55, 55);
+            border: 1px solid #ffffff;
+            border-radius: 5px;
+            padding: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .accessory-box img {
+            width: 50px;
+            height: 50px;
+            object-fit: contain;
+            filter: invert(0.8); /* Deixa o ícone claro */
+        }
+
+        .accessory-box span {
+            display: block;
+            margin-top: 5px;
+            font-size: 0.8rem;
+            font-weight: 300;
+        }
+
+        .accessory-box.selected, .accessory-box:hover {
+            background-color: rgba(85, 83, 83, 0.9);
+            border-color: #5d0707;
+        }
+
+        /* Coluna Direita: Especificações */
+        .sidebar-right {
+            flex: 2; /* Espaço intermediário */
+            min-width: 300px; /* Largura mínima */
+            display: flex;
+            flex-direction: column;
+        }
+
+        .spec-list {
+            flex-grow: 1; /* Empurra o preço final para baixo */
+        }
+
+        .spec-list p {
+            display: flex;
+            justify-content: space-between;
+            font-size: 1rem;
+            margin: 15px 0;
+            border-bottom: 1px solid #384f82;
+            padding-bottom: 10px;
+        }
+
+        .spec-list p strong {
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .spec-list p span {
+            font-weight: 400;
+            color: #d75b5b;
+        }
+
+        .spec-list .total-price-label {
+            border-bottom: none;
+            color: #a0a0a0;
+            margin-top: 30px;
+        }
+
+        .spec-list .total-price-label s {
+            color: #f08080; /* Preço antigo */
+        }
+
+        .final-price {
+            background-color: rgba(10, 14, 26, 0.5);
+            border: 1px solid #FFD700;
+            border-radius: 5px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .final-price h3 {
+            margin: 0 0 10px 0;
+            font-weight: 400;
+            color: #ff0000;
+        }
+
+        .final-price .price-amount {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        /* Botão de Salvar */
+        footer {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .save-button {
+            background-color: #6f0909;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 50%;
+            min-width: 300px;
+        }
+
+        .save-button:hover {
+            background-color: #ffffff;
+            box-shadow: 0 0 15px rgba(0, 194, 224, 0.5);
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="configurator-container">
+        <header>
+            <h1>Aliança Suprema: <span class="highlight">Personalizador de Automóveis</span></h1>
+        </header>
+
+        <main class="main-content">
+
+            <aside class="sidebar-left">
+                <h2>Modelos Disponíveis</h2>
+                <div class="model-card active">
+                    <img src="img/truck.webp" alt="Porshe">
+                    <h3>Cybertruck</h3>
+                </div>
+                <div class="model-card">
+                    <img src="img/porshe.webp" alt="Terra X">
+                    <h3>Porshe</h3>
+                </div>
+                <div class="model-card">
+                    <img src="img/carro preto perso.webp" alt="Titan GT">
+                    <h3>Toyota 86.</h3>
+                </div>
+            </aside>
+
+            <section class="visualizer">
+                <h2>Costumizar e Visualizar</h2>
+                
+                <div class="main-car-view">
+                    <img src="img/truck verde.webp" alt="Carro principal">
+                </div>
+
+                <div class="custom-options">
+                    <div class="paint-selector">
+<h3>Cores Disponiveis</h3>
+                        <div class="color-palette">
+                            <div class="color-swatch" style="background-color: #d70000;"></div>
+                            <div class="color-swatch" style="background-color: #e07b00;"></div>
+                            <div class="color-swatch" style="background-color: #d1b000;"></div>
+                            <div class="color-swatch" style="background-color: #008a0e;"></div>
+                            <div class="color-swatch" style="background-color: #005fcc;"></div>
+                            <div class="color-swatch" style="background-color: #00b5b5;"></div>
+                            <div class="color-swatch" style="background-color: #f0f0f0;"></div>
+                            <div class="color-swatch" style="background-color: #a10000;"></div>
+                            <div class="color-swatch" style="background-color: #9c5400;"></div>
+                            <div class="color-swatch" style="background-color: #b09300;"></div>
+                            <div class="color-swatch" style="background-color: #005c09;"></div>
+                            <div class="color-swatch" style="background-color: #003c85;"></div>
+                            <div class="color-swatch" style="background-color: #007a7a;"></div>
+                            <div class="color-swatch" style="background-color: #333333;"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="accessory-selector">
+                        <div class="accessory-box selected">
+                            <img src="img/roda.webp" alt="Rodas">
+                            <span>Rodas</span>
+                        </div>
+                        <div class="accessory-box">
+                            <img src="img/motor.webp" alt="Motor">
+                            <span>Motor</span>
+                        </div>
+                         <div class="accessory-box">
+                            <img src="img/aerofolio.webp" alt="Aerofólio">
+                            <span>Aerofólio</span>
+                        </div>
+                        <div class="accessory-box">
+                            <img src="img/unnamed.webp" alt="Turbo">
+                            <span>Turbo </span>
+                        </div>
+                        <div class="accessory-box">
+                            <img src="img/mola.webp" alt="Suspensão">
+                            <span>Suspensão</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <aside class="sidebar-right">
+                <h2>Especificações e Preços</h2>
+                <div class="spec-list">
+                    <p><strong>modelo:</strong> <span>Cybertruck</span></p>
+                    <p><strong>Cor:</strong> <span>Verde</span></p>
+                    <p><strong>Pneu:</strong> <span>Michelin Pilot Sport 4 / 5</span></p>
+                    <p><strong>Motor:</strong> <span>motor Cyberbeast</span></p>
+                    <p class="total-price-label">TOTAL: <s> R$ 1.520.000.</s></p>
+                </div>
+                <div class="final-price">
+                    <h3>TOTAL:</h3>
+                    <span class="price-amount">R$ 1.600.000</span>
+                </div>
+            </aside>
+        </main>
+
+        <footer>
+            <button class="save-button">
+                <a href="agradecimento.html" class="btn btn-danger">Agende Agora</a>
+            </button>
+        </footer>
+    </div>
+</body>
+</html></title>
+    
+  
+
+   
+    
+    <div class="configurator-container">
+        <header>
+            <h1>Aliança Suprema: <span class="highlight"></span></h1>
+        </header>
+
+</head>
+<body>
+
+  
